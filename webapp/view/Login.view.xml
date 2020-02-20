@@ -1,0 +1,40 @@
+<mvc:View 
+controllerName="zpr.analyse.ZPR-Analyse.controller.Login" 
+xmlns:mvc="sap.ui.core.mvc"
+xmlns:l="sap.ui.layout"
+displayBlock="true"
+xmlns="sap.m">
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>loginTitle}" class="sapUiResponsivePadding">
+				<l:VerticalLayout width="100%" class="sapUiResponsiveContentPadding">
+				<FlexBox
+					alignItems="Start"
+					justifyContent="Start"
+					direction="Column">
+						<items>
+							<l:HorizontalLayout>
+								<Image src="images/loginPic.jpg" alt="pictureBanner" width="100vw"/>
+							</l:HorizontalLayout>
+							<Text text="{i18n>loginWelcome}" class="fontPara sapUiSmallMargin"/>
+							<Text text="{i18n>pleaseLogin}" class="fontPara sapUiSmallMargin"/>
+						</items>
+				</FlexBox>
+				</l:VerticalLayout>
+					<content>
+						 <VBox justifyContent="Center" alignItems="Center" alignContent="Center" class="sapUiMediumMargin">
+							<items>
+								<Button width="80vw" text="Login" type="Emphasized" press="redirectToIncognito" class="sapUiContentPadding"/>
+							</items>
+						</VBox>
+							<VBox alignItems="Center" justifyContent="Center">
+								<Text text="{i18n>footer}" class="fontPara sapUiSmallMargin"/>
+								<Link href="https://zeroplasticrivers.com/" target="_blank" text="{i18n>footerLink}" class="sapUiSmallMargin"/>
+							</VBox>
+					</content>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>

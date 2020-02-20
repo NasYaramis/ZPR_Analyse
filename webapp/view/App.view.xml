@@ -1,0 +1,14 @@
+<mvc:View 
+	xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m"
+	controllerName="zpr.analyse.ZPR-Analyse.controller.App" 
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	displayBlock="true">
+	<Shell id="shell" appWidthLimited="true">
+		<App id="app">
+			<pages>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>
