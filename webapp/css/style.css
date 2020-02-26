@@ -9,3 +9,47 @@
 .uppercase {
   text-transform: uppercase;
 }
+
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?y194qa');
+  src:  url('fonts/icomoon.eot?y194qa#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?y194qa') format('truetype'),
+    url('fonts/icomoon.woff?y194qa') format('woff'),
+    url('fonts/icomoon.svg?y194qa#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.icon-Battery-10:before {
+  content: "\e900";
+}
+.icon-Battery-20:before {
+  content: "\e901";
+}
+.icon-Battery-30:before {
+  content: "\e902";
+}
+.icon-Battery-40:before {
+  content: "\e903";
+}
+.icon-Battery-50:before {
+  content: "\e904";
+}
+.icon-Battery-60:before {
+  content: "\e905";
+}
+.icon-Battery-70:before {
+  content: "\e906";
+}
+.icon-Battery-80:before {
+  content: "\e907";
+}
+.icon-Battery-90:before {
+  content: "\e908";
+}
+.icon-Battery-100:before {
+  content: "\e909";
+}

@@ -62,6 +62,9 @@
 			"css": [
 				{
 					"uri": "css/style.css"
+				},
+				{
+					"uri": "css/ol.css"
 				}
 			]
 		},
@@ -99,6 +102,13 @@
 					"target": [
 						"Detail"
 					]
+				},
+				{
+					"name": "RouteSensors",
+					"pattern": "RouteSensors",
+					"target": [
+						"Sensors"
+					]
 				}
 			],
 			"targets": {
@@ -115,6 +125,10 @@
 				"Detail": {
 					"viewType": "XML",
 					"viewName": "Detail"
+				},
+				"Sensors": {
+					"viewType": "XML",
+					"viewName": "Sensors"
 				},
 				"App": {
 					"viewType": "XML",

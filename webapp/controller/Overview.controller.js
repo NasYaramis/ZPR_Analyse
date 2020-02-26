@@ -8,6 +8,8 @@ sap.ui.define([
 	"use strict";
 	
 	var assets, assetsOrigin, assetsSlicedLength;
+	var smart = [];
+	var dummy = [];
 	var clicks = 1;
 	var paginationDivisor = 100; // variable which indicates the number of records shown per table page
 
@@ -32,8 +34,7 @@ sap.ui.define([
 					
 					// Split time and date variables
 					var timestamp, aDate, aTime;
-					var smart = [];
-					var dummy = [];
+
 					
 					//Hier zal de onderscheidt tussen slimme en dummy assets gebeuren.
 					for(var x in assets){
@@ -52,7 +53,8 @@ sap.ui.define([
 					}
 					
 					// Set origin assets
-					assetsOrigin = assets;
+					assetsOrigin = dummy;
+					dataj = dummy;
 					
 					// Create JSON model and set data
 					var oModel = new sap.ui.model.json.JSONModel();
@@ -215,7 +217,7 @@ sap.ui.define([
 				}
 				
 				// Set new model at table from the view
-				var oTable = that.getView().byId("overviewTable");
+				oTable = that.getView().byId("overviewTable");
 				oTable.setModel(oModel);
 				
 				// Reset pagination lenght & clicks
@@ -263,8 +265,7 @@ sap.ui.define([
 		},
 		
 		onItemPress: function (event) {
-			
-			var correlationAssetId = event.getParameters().listItem.mAggregations.cells[4].mProperties;
+			var correlationAssetId = event.getParameters().listItem.mAggregations.cells[5].mProperties;
 			var oModel = new sap.ui.model.json.JSONModel();
 			oModel.setData({'correlationAssetId' : correlationAssetId}, true);
 			

@@ -20,10 +20,11 @@ xmlns:core="sap.ui.core">
 				<items>
 					<Table id="overviewTable" items="{path: '/'}" itemPress="onItemPress" sticky="ColumnHeaders" alternateRowColors="true">
 						<columns>
+							<Column width="8%"></Column>
 							<Column width="33%" >
 								<Label text="{i18n>timeLabel}"/>
 							</Column>
-							<Column width="30%" >
+							<Column width="22%" >
 								<Label text="{i18n>itemLabel}"/>
 							</Column>
 							<Column width="30%">
@@ -32,6 +33,10 @@ xmlns:core="sap.ui.core">
 							<Column width="7%"/>
 						</columns>
 						<ColumnListItem type="Active">
+							<core:Icon
+								src="sap-icon://blank-tag"
+								class="size1"
+								color="#031E48" ></core:Icon>
 							<Text text="{time}"/>
 							<Text text="{physicalId}"/>
 							<Text text="{=${connectivityStatus} === null ? ${assetStatus} : ${locationStatus} }"/>

@@ -1,0 +1,132 @@
+<mvc:View 
+	controllerName="zpr.analyse.ZPR-Analyse.controller.Sensors"
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m" 
+	xmlns:core="sap.ui.core">
+	
+	<Page title="{i18n>sensorTitle}" floatingFooter="false">
+		<headerContent>
+			<core:Fragment fragmentName="zpr.analyse.ZPR-Analyse.view.fragments.Header" type="XML" />
+		</headerContent>
+		<!--Table with all the sensors which are active-->
+		<ScrollContainer id="scrollBarSensorsActive" width="100%" vertical="true" focusable="false"
+		class="noScrollBarWebkit noScrollBarIE scrollHeightSensors" height="35vh">
+			<VBox alignContent="Center" justifyContent="Center" alignItems="Center">
+				<items>
+					<!--Small but nice tutorial on how to create a responsive table: -->
+					<!--https://help.sap.com/doc/saphelp_uiaddon10/1.17/en-US/38/855e06486f4910bfa6f4485f7c2bac/content.htm?no_cache=true-->
+					<Table id="sensorTableActive" items="{path: '/'}" itemPress="onSensorPress" sticky="ColumnHeaders" 
+					alternateRowColors="true" contextualWidth="auto" popinLayout="GridSmall">
+						<infoToolbar>
+							<OverflowToolbar>
+								<Label id="lblSensorInfoActive" text=""/>
+							</OverflowToolbar>
+						</infoToolbar>
+						<columns>
+							<Column width="20%"
+								minScreenWidth="tablet"
+								demandPopin="true">
+								<Label text="{i18n>LocationStatus}"/>
+							</Column>
+							<Column width="20%"
+								minScreenWidth="tablet"
+								demandPopin="true">
+								<Label text="{i18n>ConnectivityStatus}"/>
+							</Column>
+							<Column width="33%"
+								minScreenWidth=""
+								demandPopin="false">
+								<Label text="{i18n>SensorId}"/>
+							</Column>
+							<Column width="20%"  
+								minScreenWidth=""
+								demandPopin="false"/>
+							<Column width="7%"
+								minScreenWidth=""
+								demandPopin="false"/>
+						</columns>
+						<ColumnListItem type="Active">
+							<HBox justifyContent ="Start">
+								<core:Icon
+								src="sap-icon://feed"
+								class="size1"
+								color="#031E48" ></core:Icon>
+								<Text text="{locationStatus}" class="sapUiTinyMarginBegin" />
+							</HBox>
+							<Text text="{connectivityStatus}"/>
+							<Text text="{physicalId}"/>
+							<HBox justifyContent="End">
+								<Text text="{batteryLevel}" class="sapUiTinyMarginEnd" />
+								<core:Icon color="{batteryColor}" src="{batteryIcon}" />
+							</HBox>
+							<HBox justifyContent="End">
+								<core:Icon src="sap-icon://feeder-arrow" />
+							</HBox>
+							<Text text="{id}" visible="false"/>
+						</ColumnListItem>
+					</Table>
+				</items>
+			</VBox>
+		</ScrollContainer>
+		
+		<!--Table with all the sensors which are retired-->
+		<ScrollContainer id="scrollBarSensorsRetired" width="100%" vertical="true" focusable="false"
+		class="noScrollBarWebkit noScrollBarIE scrollHeightRetired" height="35vh">
+			<VBox alignContent="Center" justifyContent="Center" alignItems="Center">
+				<items>
+					<Table id="sensorTableRetired" items="{path: '/'}" itemPress="onSensorPress" sticky="ColumnHeaders" 
+					alternateRowColors="true" contextualWidth="auto" popinLayout="GridSmall">
+						<infoToolbar>
+							<OverflowToolbar>
+								<Label id="lblSensorInfoRetired" text=""/>
+							</OverflowToolbar>
+						</infoToolbar>
+						<columns>
+							<Column width="20%"
+								minScreenWidth="tablet"
+								demandPopin="true">
+								<Label text="{i18n>LocationStatus}"/>
+							</Column>
+							<Column width="20%"
+								minScreenWidth="tablet"
+								demandPopin="true">
+								<Label text="{i18n>ConnectivityStatus}"/>
+							</Column>
+							<Column width="33%"
+								minScreenWidth=""
+								demandPopin="false">
+								<Label text="{i18n>SensorId}"/>
+							</Column>
+							<Column width="20%"  
+								minScreenWidth=""
+								demandPopin="false"/>
+							<Column width="7%"
+								minScreenWidth=""
+								demandPopin="false"/>
+						</columns>
+						<ColumnListItem type="Active">
+							<HBox justifyContent ="Start">
+								<core:Icon
+								src="sap-icon://feed"
+								class="size1"
+								color="#031E48" ></core:Icon>
+								<Text text="{locationStatus}" class="sapUiTinyMarginBegin" />
+							</HBox>
+							<Text text="{connectivityStatus}"/>
+							<Text text="{physicalId}"/>
+							<HBox justifyContent="End">
+								<Text text="{batteryLevel}" class="sapUiTinyMarginEnd" />
+								<core:Icon color="{batteryColor}" src="{batteryIcon}" />
+							</HBox>
+							<HBox justifyContent="End">
+								<core:Icon src="sap-icon://feeder-arrow" />
+							</HBox>
+							<Text text="{id}" visible="false"/>
+						</ColumnListItem>
+					</Table>
+				</items>
+			</VBox>
+		</ScrollContainer>
+	</Page>
+</mvc:View>
