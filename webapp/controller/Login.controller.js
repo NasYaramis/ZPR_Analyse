@@ -3,7 +3,7 @@ sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/m/MessageBox",
 	"sap/ui/util/Storage"
-], function (Controller, UIComponent,MessageBox,Storage) {
+], function (Controller, UIComponent, MessageBox, Storage) {
 	"use strict";
 
 	// There are variables made to store the token
@@ -22,8 +22,6 @@ sap.ui.define([
 			// Bind a function to this view so this will be called upon every time we route to this view
 			this._oRouter = this.getOwnerComponent().getRouter();
 			this._oRouter.getRoute("RouteLogin").attachMatched(this.OAuthfunction(), this);
-			
-
 		},
 		
 		onPressOverview: function () {
@@ -52,7 +50,7 @@ sap.ui.define([
 				if(beforeRealCalculatedUrl.split("id_token=")[1] === undefined)
 				{
 					this.authenticated=false;
-					//this.redirectToIncognito();
+					this.redirectToIncognito();
 				}
 				else{
 					var beginStringToken = url.split("id_token=")[1];
@@ -84,15 +82,12 @@ sap.ui.define([
 					oAuthStorage.put("AuthenticatedAccessToken",this.oAuthAccessCodeTokenUsername); 
 				
 					var oRouter = UIComponent.getRouterFor(this);
-					oRouter.navTo("RouteProfile");
-					
+					oRouter.navTo("RouteOverview");
 				}
 		},
 		
 		redirectToIncognito: function(){
-
-			window.location = "https://zpr-auth.auth.eu-west-1.amazoncognito.com/oauth2/authorize?response_type=token&client_id=6id0v147p3uj37f6fh9qhcddg6&redirect_uri=https://zprsapresearcher-s0020962283trial.dispatcher.hanatrial.ondemand.com/index.html&scope=openid";	
-			//https://zpr-auth.auth.eu-west-1.amazoncognito.com/login?response_type=token&client_id=6id0v147p3uj37f6fh9qhcddg6&redirect_uri=https://zprsapresearcher-s0020962283trial.dispatcher.hanatrial.ondemand.com/index.html&scope=openid
+			window.location = "https://zpr-auth.auth.eu-west-1.amazoncognito.com/login?response_type=token&client_id=27sap6am2ijsqqk9hu03u1mapu&redirect_uri=https://zpranalyse-a44552055.dispatcher.hana.ondemand.com/index.html&scope=openid";	
 		}
 	});
 });

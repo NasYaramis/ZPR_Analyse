@@ -33,7 +33,7 @@
 	"sap.ui5": {
 		"flexEnabled": false,
 		"rootView": {
-			"viewName": "zpr.analyse.ZPR-Analyse.view.App",
+			"viewName": "zpr.analyse.ZPR-Analyse.view.Login",
 			"type": "XML",
 			"async": true,
 			"id": "View1"
@@ -129,6 +129,11 @@
 				"Sensors": {
 					"viewType": "XML",
 					"viewName": "Sensors"
+				},
+				"notFound": {
+					"viewType": "XML",
+					"viewName": "NotFound",
+					"transition": "show"
 				},
 				"App": {
 					"viewType": "XML",
