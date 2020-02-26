@@ -1,1 +1,11 @@
 /* Enter your custom styles here */
+.menuButton .sapMBtnContent {
+    line-height: 4rem;
+	padding: none;
+	margin: none;
+	width: 96%;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}

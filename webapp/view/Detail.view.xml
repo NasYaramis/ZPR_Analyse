@@ -1,0 +1,41 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="zpr.analyse.ZPR-Analyse.controller.Detail" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page id="pageTitle" title="Title" showNavButton="true" navButtonPress="onNavBack">
+		<headerContent>
+			<core:Fragment fragmentName="zpr.analyse.ZPR-Analyse.view.fragments.Header" type="XML" />
+		</headerContent>
+		<content>
+			<VBox>
+				<Label text="{i18n>labelTravel}" class="sapUiSmallMargin"/>
+				<Label id="labelTitle" class="sapUiSmallMargin"/>
+			</VBox>
+			<List
+				id="itemList"
+				binding = "{/0}"
+				headerText="{i18n>titleList}">
+				<DisplayListItem 
+					class="uppercase"
+					label="{i18n>activeItem}"
+					value="{active}"/>
+				<DisplayListItem
+					label="{i18n>typeItem}"
+					value="{type}"/>
+				<DisplayListItem
+					id = "batteryItem"
+					label="{i18n>batteryItem}"
+					value="{batteryLevel} %"/>	
+				<DisplayListItem
+					label="{i18n>assetItem}"
+					value="{assetStatus}"/>
+				<DisplayListItem
+					label="{i18n>locationItem}"
+					value="{locationStatus}"/>
+			</List>
+			<HBox>
+				<ToggleButton id="btnLastLocation" width="100%" text="{i18n>showOnMap}" enabled="true" pressed="true" press="onLastLocation" class="sapUiContentPadding sapUiSmallMarginEnd"/>
+				<ToggleButton id="btnShwPicture" width="100%" text="{i18n>showPicture}" enabled="true" pressed="false" press="onShowPicture" class="sapUiContentPadding" />
+			</HBox>
+			<HBox id="map_canvas" width="100%" height="53vh"></HBox>
+		</content>
+	</Page>
+</mvc:View>

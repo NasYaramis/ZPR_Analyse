@@ -85,6 +85,20 @@
 					"target": [
 						"TargetLogin"
 					]
+				},
+				{
+					"pattern": "RouteOverview",
+					"name": "RouteOverview",
+					"target": [
+						"Overview"
+					]
+				},
+				{
+					"name": "RouteDetail",
+					"pattern": "RouteDetail/{correlationId}",
+					"target": [
+						"Detail"
+					]
 				}
 			],
 			"targets": {
@@ -93,6 +107,14 @@
 					"viewName": "Login",
 					"transition": "slide",
 					"clearControlAggregation": false
+				},
+				"Overview": {
+					"viewType": "XML",
+					"viewName": "Overview"
+				},
+				"Detail": {
+					"viewType": "XML",
+					"viewName": "Detail"
 				},
 				"App": {
 					"viewType": "XML",

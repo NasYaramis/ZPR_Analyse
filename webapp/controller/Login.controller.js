@@ -23,7 +23,14 @@ sap.ui.define([
 			this._oRouter = this.getOwnerComponent().getRouter();
 			this._oRouter.getRoute("RouteLogin").attachMatched(this.OAuthfunction(), this);
 			
+
 		},
+		
+		onPressOverview: function () {
+			var oRouter = UIComponent.getRouterFor(this);
+			oRouter.navTo("RouteOverview");
+		},
+		
 		OAuthfunction : function(){
 			// Make the global variable for the tokens empty
 			this.oAuthToken = null;
@@ -36,16 +43,16 @@ sap.ui.define([
 			
 			var beforeRealCalculatedUrl = window.location.href;
 			var url = beforeRealCalculatedUrl.split("#")[1];
-			if (beforeRealCalculatedUrl.split("#")[1]==undefined)
+			if (beforeRealCalculatedUrl.split("#")[1]===undefined)
 			{
 				this.authenticated=false;
-				this.redirectToIncognito();
+				//this.redirectToIncognito();
 			}
 			else{
-				if(beforeRealCalculatedUrl.split("id_token=")[1] == undefined)
+				if(beforeRealCalculatedUrl.split("id_token=")[1] === undefined)
 				{
 					this.authenticated=false;
-					this.redirectToIncognito();
+					//this.redirectToIncognito();
 				}
 				else{
 					var beginStringToken = url.split("id_token=")[1];
@@ -66,7 +73,7 @@ sap.ui.define([
 				}
 			}
 				// If the authentication has been succeeded, then we will put it in the session storage otherwise we do nothing here
-				if(this.authenticated==true)
+				if(this.authenticated===true)
 				{
 					// Here the token and the expire time is being stored in the storage as session storage
 					oAuthStorage.put("oAuthToken",this.oAuthToken);
@@ -83,7 +90,7 @@ sap.ui.define([
 		},
 		
 		redirectToIncognito: function(){
-			
+
 			window.location = "https://zpr-auth.auth.eu-west-1.amazoncognito.com/oauth2/authorize?response_type=token&client_id=6id0v147p3uj37f6fh9qhcddg6&redirect_uri=https://zprsapresearcher-s0020962283trial.dispatcher.hanatrial.ondemand.com/index.html&scope=openid";	
 			//https://zpr-auth.auth.eu-west-1.amazoncognito.com/login?response_type=token&client_id=6id0v147p3uj37f6fh9qhcddg6&redirect_uri=https://zprsapresearcher-s0020962283trial.dispatcher.hanatrial.ondemand.com/index.html&scope=openid
 		}

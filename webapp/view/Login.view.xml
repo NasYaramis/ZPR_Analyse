@@ -15,9 +15,9 @@ xmlns="sap.m">
 					direction="Column">
 						<items>
 							<l:HorizontalLayout>
-								<Image src="images/loginPic.jpg" alt="pictureBanner" width="100vw"/>
+								<Image src="./images/loginPic.jpg" alt="pictureBanner" width="100%"/>
 							</l:HorizontalLayout>
-							<Text text="{i18n>loginWelcome}" class="fontPara sapUiSmallMargin"/>
+							<Title 	titleStyle="H2" text="{i18n>loginWelcome}" class="sapUiSmallMargin"/>
 							<Text text="{i18n>pleaseLogin}" class="fontPara sapUiSmallMargin"/>
 						</items>
 				</FlexBox>
@@ -25,14 +25,25 @@ xmlns="sap.m">
 					<content>
 						 <VBox justifyContent="Center" alignItems="Center" alignContent="Center" class="sapUiMediumMargin">
 							<items>
-								<Button width="80vw" text="Login" type="Emphasized" press="redirectToIncognito" class="sapUiContentPadding"/>
+								<Button width="30vw" text="Login" type="Emphasized" press="redirectToIncognito" class="sapUiContentPadding"/>
 							</items>
 						</VBox>
-							<VBox alignItems="Center" justifyContent="Center">
-								<Text text="{i18n>footer}" class="fontPara sapUiSmallMargin"/>
-								<Link href="https://zeroplasticrivers.com/" target="_blank" text="{i18n>footerLink}" class="sapUiSmallMargin"/>
-							</VBox>
+						<Toolbar>
+							<Button
+							class="menuButton myOverview"
+							icon="sap-icon://menu"
+							text="Overview"
+							press=".onPressOverview"/>
+						</Toolbar>
 					</content>
+					<footer>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<Text text="{i18n>footer}" class="fontPara sapUiSmallMargin"/>
+							<Link href="https://zeroplasticrivers.com/" target="_blank" text="{i18n>footerLink}" class="sapUiSmallMargin"/>
+							<ToolbarSpacer/>
+						</OverflowToolbar>
+					</footer>
 				</Page>
 			</pages>
 		</App>

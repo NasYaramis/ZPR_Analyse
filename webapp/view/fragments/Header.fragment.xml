@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:tnt="sap.tnt"
+	xmlns:core="sap.ui.core">
+	<Toolbar height="6rem" design="Auto">
+			<Button
+				icon="sap-icon://menu"
+				press=".Header.onPressOverview"/>
+			<Button 
+				icon="sap-icon://feed"
+				press=".Header.onPressItems"/>
+			<Button 
+				icon="sap-icon://map"
+				press=".Header.onPressMap"/>
+			<Button 
+				icon="sap-icon://column-chart-dual-axis"
+				press=".Header.onPressChart"/>
+			<Button 
+				icon="sap-icon://person-placeholder"
+				press=".Header.onPressProfile"/>
+	</Toolbar>
+</core:FragmentDefinition>
