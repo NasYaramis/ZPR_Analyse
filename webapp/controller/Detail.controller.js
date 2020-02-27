@@ -49,10 +49,6 @@ sap.ui.define([
 			var activeJourneyLocations = [];
 			activeJourney = "";
 			oLastLocation = "";
-
-			if (that.initialized) {
-				map.setTarget(that.getView().byId("map_canvas").getDomRef());
-			}
 			
 			// Clear source from the last location
 			if (sourceLastLocation) {
@@ -104,7 +100,11 @@ sap.ui.define([
 
 					if (dataj.batteryLevel === null) {
 						that.getView().byId("batteryItem").setVisible(false);
-					}
+					}else that.getView().byId("batteryItem").setVisible(true);
+					
+					if(dataj.active === true){
+						that.getView().byId("labelTravel").setText("Asset is travelling.");
+					}else that.getView().byId("labelTravel").setText("Asset is NOT travelling.");
 
 					var myArr = [];
 					myArr.push(dataj);

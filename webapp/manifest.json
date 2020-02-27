@@ -109,6 +109,20 @@
 					"target": [
 						"Sensors"
 					]
+				},
+				{
+					"name": "RouteMap",
+					"pattern": "RouteMap",
+					"target": [
+						"Map"
+					]
+				},
+				{
+					"name": "RouteChart",
+					"pattern": "RouteChart",
+					"target": [
+						"Chart"
+					]
 				}
 			],
 			"targets": {
@@ -129,6 +143,14 @@
 				"Sensors": {
 					"viewType": "XML",
 					"viewName": "Sensors"
+				},
+				"Map": {
+					"viewType": "XML",
+					"viewName": "Map"
+				},
+				"Chart": {
+					"viewType": "XML",
+					"viewName": "Chart"
 				},
 				"notFound": {
 					"viewType": "XML",

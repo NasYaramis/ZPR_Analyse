@@ -1,0 +1,69 @@
+<mvc:View controllerName="zpr.analyse.ZPR-Analyse.controller.Map" height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
+	xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants">
+	<f:DynamicPage id="dynamicPageId" headerExpanded="{/headerExpanded}">
+		<!-- DynamicPage Title -->
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Label text="Map"/>
+				</f:heading>
+				<f:actions>
+					<core:Fragment fragmentName="zpr.analyse.ZPR-Analyse.view.fragments.Header" type="XML"/>
+				</f:actions>
+			</f:DynamicPageTitle>
+		</f:title>
+		<!-- DynamicPage Header -->
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar id="filterbar" reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="false" filterContainerWidth="15rem">
+						<fb:filterItems>
+							<fb:FilterItem name="A" label="Batch">
+								<fb:control>
+									<Select id="slBatch" forceSelection="true" change="onSelectChange" items="{/Batch}">
+										<core:Item key="{key}" text="{name}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="B" label="Type">
+								<fb:control>
+									<Select id="slType" change="onSelectChange" forceSelection="true" items="{/Type}">
+										<core:Item key="{key}" text="{name}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="C" label="Color">
+								<fb:control>
+									<Select id="slColor" change="onSelectChange" forceSelection="true" items="{/Color}">
+										<core:Item key="{key}" text="{name}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="D" label="Location">
+								<fb:control>
+									<Select id="slLocation" change="onSelectChange" forceSelection="true" items="{/Location}">
+										<core:Item key="{key}" text="{name}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="E" label="Begin date">
+								<fb:control>
+									<DatePicker change="onSelectChange"></DatePicker>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="F" label="End date">
+								<fb:control>
+									<DatePicker change="onSelectChange"></DatePicker>
+								</fb:control>
+							</fb:FilterItem>
+						</fb:filterItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<!-- DynamicPage Content -->
+		<f:content>
+			<HBox id="map_canvas" width="100%" height="100%"></HBox>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

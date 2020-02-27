@@ -50,7 +50,8 @@ sap.ui.define([
 				if(beforeRealCalculatedUrl.split("id_token=")[1] === undefined)
 				{
 					this.authenticated=false;
-					this.redirectToIncognito();
+					//DIT TERUG DECOMMENTEN BIJ EINDE VAN HET PROJECT!!!!!
+					//this.redirectToIncognito();
 				}
 				else{
 					var beginStringToken = url.split("id_token=")[1];

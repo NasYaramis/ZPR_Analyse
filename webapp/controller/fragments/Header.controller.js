@@ -25,12 +25,12 @@ sap.ui.define([
 			oRouter.navTo("RouteSensors");
 		},
 		
-		onPressAlerts  : function () {
+		onPressMap: function () {
 			var oRouter = UIComponent.getRouterFor(this);
 			oRouter.navTo("RouteMap");
 		},
 		
-		onPressExport: function () {
+		onPressChart: function () {
 			var oRouter = UIComponent.getRouterFor(this);
 			oRouter.navTo("RouteChart");
 		},

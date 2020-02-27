@@ -186,7 +186,7 @@ sap.ui.define([
 			
 			// Navigate to detail page
 			var oRouter = UIComponent.getRouterFor(this);
-			oRouter.navTo("RouteDetailSensor", {
+			oRouter.navTo("RouteDetail", {
 				correlationId : correlationAssetId.text
 			});
 		},
