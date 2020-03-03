@@ -51,10 +51,13 @@ sap.ui.define([
 					oModel.setData(assets);
 					that.getView().setModel(oModel);
 					
-					//This is created to gain Type in filters
+					//This is created to gain Batch in filters
 					var oSlBatchJSON = new sap.ui.model.json.JSONModel();
 					var Batch = {
 				            Batch : [{
+				                name : "CHOOSE A BATCH",
+				                key  : "BATCH 0"
+				            },{
 				                name : "BATCH 1",
 				                key  : "BATCH 1"
 				            },{
@@ -81,11 +84,14 @@ sap.ui.define([
 					var oSlTypeJSON = new sap.ui.model.json.JSONModel();
 					var Type = {
 				            Type : [{
+				                name : "CHOOSE A TYPE",
+				                key  : "TYPE0"
+				            },{
 				                name : "CONNECTED",
-				                key  : "CONNECTED"
+				                key  : "TYPE1"
 				            },{
 				                name : "UNCONNECTED",
-				                key  : "UNCONNECTED"
+				                key  : "TYPE2"
 				            }]
 				    };
 			        oSlTypeJSON.setData(Type);
@@ -95,14 +101,17 @@ sap.ui.define([
 					var oSlColorJSON = new sap.ui.model.json.JSONModel();
 					var Color = {
 				            Color : [{
-				                name : "ROOD",
-				                key  : "ROOD"
+				                name : "CHOOSE A COLOR",
+				                key  : "COLOR0"
 				            },{
-				                name : "BLAUW",
-				                key  : "BLAUW"
+				                name : "RED",
+				                key  : "COLOR1"
 				            },{
-				                name : "ZWART",
-				                key  : "ZWART"
+				                name : "BLUE",
+				                key  : "COLOR2"
+				            },{
+				                name : "BLACK",
+				                key  : "COLOR3"
 				            }]
 				    };
 			        oSlColorJSON.setData(Color);
@@ -112,14 +121,17 @@ sap.ui.define([
 					var oSlLocationJSON = new sap.ui.model.json.JSONModel();
 					var Location = {
 				            Location : [{
+				                name : "CHOOSE A LOCATION",
+				                key  : "LOC0"
+				            },{
 				                name : "MELLE",
-				                key  : "MELLE"
+				                key  : "LOC1"
 				            },{
 				                name : "DENDERMONDE",
-				                key  : "DENDERMONDE"
+				                key  : "LOC2"
 				            },{
 				                name : "WINTAM",
-				                key  : "WINTAM"
+				                key  : "LOC3"
 				            }]
 				    };
 			        oSlLocationJSON.setData(Location);
