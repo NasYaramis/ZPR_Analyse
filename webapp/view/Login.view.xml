@@ -8,21 +8,21 @@ xmlns="sap.m">
 		<App id="app">
 			<pages>
 				<Page id="page" title="{i18n>loginTitle}" class="sapUiResponsivePadding">
-				<l:VerticalLayout width="100%" class="sapUiResponsiveContentPadding">
+				<l:VerticalLayout class="sapUiResponsiveContentPadding">
 				<FlexBox
 					alignItems="Start"
 					justifyContent="Start"
 					direction="Column">
 						<items>
 							<l:HorizontalLayout>
-								<Image src="./images/loginPic.jpg" alt="pictureBanner" width="100%"/>
+								<Image src="./images/loginPic.jpg" alt="pictureBanner" class="responsive"/>
 							</l:HorizontalLayout>
 							<Title 	titleStyle="H2" text="{i18n>loginWelcome}" class="sapUiSmallMargin"/>
 							<Text text="{i18n>pleaseLogin}" class="fontPara sapUiSmallMargin"/>
 						</items>
 				</FlexBox>
 				</l:VerticalLayout>
-					<content>
+					<content class="sapUiResponsiveContentPadding">
 						 <VBox justifyContent="Center" alignItems="Center" alignContent="Center" class="sapUiMediumMargin">
 							<items>
 								<Button width="30vw" text="Login" type="Emphasized" press="redirectToIncognito" class="sapUiContentPadding"/>

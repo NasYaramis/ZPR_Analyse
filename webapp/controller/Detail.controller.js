@@ -46,7 +46,6 @@ sap.ui.define([
 			}
 
 			// Set variables to empty which keep track of the of the active journeys
-			var activeJourneyLocations = [];
 			activeJourney = "";
 			oLastLocation = "";
 			

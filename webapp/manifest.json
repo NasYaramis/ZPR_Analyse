@@ -123,6 +123,13 @@
 					"target": [
 						"Chart"
 					]
+				},
+				{
+					"name": "RouteProfile",
+					"pattern": "RouteProfile",
+					"target": [
+						"Profile"
+					]
 				}
 			],
 			"targets": {
@@ -151,6 +158,10 @@
 				"Chart": {
 					"viewType": "XML",
 					"viewName": "Chart"
+				},
+				"Profile": {
+					"viewType": "XML",
+					"viewName": "Profile"
 				},
 				"notFound": {
 					"viewType": "XML",

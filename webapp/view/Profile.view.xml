@@ -1,0 +1,34 @@
+<mvc:View
+	controllerName="zpr.analyse.ZPR-Analyse.controller.Profile" 
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Page title="{i18n>profileTitle}" floatingFooter="false">
+		<headerContent>
+			<core:Fragment fragmentName="zpr.analyse.ZPR-Analyse.view.fragments.Header" type="XML" />
+		</headerContent>
+		<VBox
+			alignItems="Center"
+			class="generalButtons" 
+			width="100%">
+				<VBox class="card sapUiSmallMarginBottom sapUiSmallMarginTop generalButtons" width="90%">
+					<Text class="title" text="{i18n>nameProfile}"/>
+						 <!--binding="{/user}" text="{name}"-->
+						<Text id="userName" class="content"/>
+						<Text class="title" text="{i18n>roleProfile}"/>
+						 <!--binding="{/user}" text="{role}"-->
+						<Text id="userRole" class="content"/>
+						<Text class="title" text="{i18n>permissionProfile}"/>
+						 <!--binding="{/user}" text="{permission}"-->
+						<Text id="userExport" class="content"/>
+				</VBox>
+		</VBox>
+		<VBox
+			alignItems="Center"
+			class="generalButtons sapUiSmallMarginTop" 
+			width="100%">
+				<Button type="Reject" icon="sap-icon://log" text="{i18n>profileButtonLogout}" width="100%" press="LogOut"/>
+		</VBox>
+	</Page>
+</mvc:View>
