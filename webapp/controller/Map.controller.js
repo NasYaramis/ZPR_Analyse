@@ -10,20 +10,26 @@ sap.ui.define([
 	
 	var assets;
 	// Define map and location we'll use later on
-	var oLocations, map, physicalId, oLastLocation;
+	var oLocations, map;
 	var aLocations = [];
 	var aInfo = [];
 
 	// Define all the layers for both total journey and last location
-	var groupTotalJourneyLayers, groupTotalJourneyLines, lastLocationLayer;
+	var groupTotalJourneyLayers, groupTotalJourneyLines, groupClusterLayers;
 	
 	// Define the variables we need to keep track of all the sources
-	var sourceLastLocation;
 	var sourceTotalLocations = [];
 	var sourceTotalLines;
 	var counter = 0;
 	
+	var clusters = new ol.layer.Vector();
+	var allClusters = [];
 	var allLayers = [];
+	var marker = new ol.Feature();
+	var aLayers = [];
+	var features = [];
+	var markers = [];
+
 
 	return Controller.extend("zpr.analyse.ZPR-Analyse.controller.Map", {
 		Header: new Header(this),
@@ -52,12 +58,11 @@ sap.ui.define([
 				//	},
 				success: function (dataj) {
 					assets = dataj;
+					that.feedData();
 					
 					var oModel = new sap.ui.model.json.JSONModel();
 					oModel.setData(assets);
 					that.getView().setModel(oModel);
-					
-					that.feedData();
 					
 					that.aKeys = [
 						"Batch", "Type", "Color", "Location"
@@ -66,16 +71,13 @@ sap.ui.define([
 					that.oSelectCategory = that.getSelect("slType");
 					that.oSelectSupplierName = that.getSelect("slColor");
 					that.oSelectLocation = that.getSelect("slLocation");
-					//that.oModel.setProperty("/Filter/text", "Filtered by None");
-					that.addSnappedLabel();
-		
+
 					var oFB = that.getView().byId("filterbar");
 					if (oFB) {
 						oFB.variantsInitialized();
 					}
-					/*// Set new model at table from the view
-					var oFilter = that.getView().byId("filterbar");
-					oFilter.setModel(oModel);*/
+
+
 				},
 				error: function (errorstatus, statusText) {
 					// If the user is unauthorized we redirect him back to the login page
@@ -97,24 +99,22 @@ sap.ui.define([
 		},
 		onSelectChange: function() {
 			var aCurrentFilterValues = [];
-
+			
 			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectName));
 			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectCategory));
 			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectSupplierName));
 			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectLocation));
 
-			this.filterTable(aCurrentFilterValues);
+			this.filterMap(aCurrentFilterValues);
 		},
 
-		filterTable: function(aCurrentFilterValues) {
-			// Remove both layers that belong to the total journey to the map
+		filterMap: function(aCurrentFilterValues) {
 			map.removeLayer(groupTotalJourneyLayers);
 			map.removeLayer(groupTotalJourneyLines);
 			this.resetEverything();
 
 
 			if(aCurrentFilterValues[1] !== "TYPE0"){
-					//Hier zal de onderscheidt tussen slimme en dummy assets gebeuren.
 					var assetJourneysLength;
 					
 					if(aCurrentFilterValues[1] === "TYPE1"){
@@ -137,16 +137,29 @@ sap.ui.define([
 			}
 			this.createLastLocations();
 			this.showTotalJourney();
-			this.updateFilterCriterias(this.getFilterCriteria(aCurrentFilterValues));
 		},
 		
 		createLastLocations: function() {
-			var that = this;
-			
-			var aLayers = [];
-			
 			// Reset locations array array
 			aLocations.length = 0;
+			
+			features = oLocations.map(function(location){
+				marker = new ol.Feature({
+					geometry: new ol.geom.Point(
+						ol.proj.fromLonLat([location.longitude, location.latitude])
+					)
+				});
+				
+				marker.set('info', aInfo[counter]);
+				counter++;
+				
+				return marker;
+			});
+			
+			// for(var x in features){
+			// 	x.set('info', aInfo[counter]);
+			// 	counter++;
+			// }
 			
 			oLocations.forEach(function(location) {
 				// Fill an array with solely the converted longitude and latitude
@@ -155,20 +168,22 @@ sap.ui.define([
 				);
 				
 				// Create a marker (= feature) which references to the location of the asset
-				var marker = new ol.Feature({
+				 marker = new ol.Feature({
 					geometry: new ol.geom.Point(
 						ol.proj.fromLonLat([location.longitude, location.latitude])
 					)
 				});
 				
-				// Set an extra property named timestamp so we can show the time later on when a users clicks on a marker
-				marker.set('info', aInfo[counter]);
-				counter++;
+				// Set an extra property named info so we can show the time later on when a users clicks on a marker
+				//marker.set('info', aInfo[counter]);
+				//counter++;
+
+				
 
 				// Change the style of the marker and use a custom icon
 				marker.setStyle( new ol.style.Style({
 					image: new ol.style.Circle({
-						radius: 4,
+						radius: 10,
 						fill: new ol.style.Fill({color: '#E6600D'}),
 						stroke: new ol.style.Stroke({
 							color: [255,0,0], width: 2
@@ -176,9 +191,44 @@ sap.ui.define([
 					})
 				}));
 				
-				// Create a vector based on the marker (= feature)
+				// Create a vector based on the features
 				var vectorSource = new ol.source.Vector({
-					features: [marker]
+					features: features
+				});
+				
+				var clusterSource = new ol.source.Cluster({
+					distance: 20,
+					source: vectorSource
+				});
+
+				var styleCache = {};
+				clusters = new ol.layer.Vector({
+				  source: clusterSource,
+				  style: function(feature) {
+				    var size = feature.get("features").length;
+				    var style = styleCache[size];
+				    if (!style) {
+				      style = new ol.style.Style({
+				        image: new ol.style.Circle({
+				          radius: 10,
+				          stroke: new ol.style.Stroke({
+				            color: "#fff"
+				          }),
+				          fill: new ol.style.Fill({
+				            color: "#E6600D"
+				          })
+				        }),
+				        text: new ol.style.Text({
+				          text: size.toString(),
+				          fill: new ol.style.Fill({
+				            color: "#fff"
+				          })
+				        })
+				      });
+				      styleCache[size] = style;
+				    }
+				    return style;
+				  }
 				});
 				
 				// Create layer based on a vector		
@@ -186,7 +236,9 @@ sap.ui.define([
 					source: vectorSource
 				});
 				
+				allClusters.push(clusters);
 				allLayers.push(markerVectorLayer);
+				allLayers.push(clusters);
 				aLayers.push(markerVectorLayer);
 				sourceTotalLocations.push(vectorSource);
 			});
@@ -195,6 +247,12 @@ sap.ui.define([
 				groupTotalJourneyLayers = new ol.layer.Group({
 					layers: aLayers,
 					name: 'totalJourneysGroup'
+					
+				});
+				
+				groupClusterLayers = new ol.layer.Group({
+					layers: allClusters,
+					name: 'totalClusters'
 					
 				});
 				
@@ -211,7 +269,7 @@ sap.ui.define([
 				sourceTotalLines = new ol.source.Vector({
 					features: [new ol.Feature({
 						geometry: new ol.geom.LineString(aLocations),
-						name: 'Line',
+						name: 'Line'
 					})]
 				})
 				
@@ -230,34 +288,16 @@ sap.ui.define([
 		showTotalJourney: function() {
 			var that = this;
 			
-			// Remove the last location layer
-			map.removeLayer(lastLocationLayer);
-			
 			// Add both layers that belong to the total journey to the map
 			map.addLayer(groupTotalJourneyLayers);
+			map.addLayer(groupClusterLayers);
 
 			// Reset the center of the map
 			if(oLocations.length > 0){
 				that.setMapCenter(oLocations[(oLocations.length - 1)].longitude, oLocations[(oLocations.length - 1)].latitude);
 			}
 		},
-
-		updateFilterCriterias: function(aFilterCriterias) {
-			this.removeSnappedLabel(); /* because in case of label with an empty text, */
-			this.addSnappedLabel(); /* a space for the snapped content will be allocated and can lead to title misalignment */
-			//this.oModel.setProperty("/Filter/text", this.getFormattedSummaryText(aFilterCriterias));
-		},
-
-		addSnappedLabel: function() {
-			var oSnappedLabel = this.getSnappedLabel();
-			oSnappedLabel.attachBrowserEvent("click", this.onToggleHeader, this);
-			this.getPageTitle().addSnappedContent(oSnappedLabel);
-		},
-
-		removeSnappedLabel: function() {
-			this.getPageTitle().destroySnappedContent();
-		},
-
+		
 		getFilters: function(aCurrentFilterValues) {
 			this.aFilters = [];
 
@@ -267,13 +307,7 @@ sap.ui.define([
 
 			return this.aFilters;
 		},
-		getFilterCriteria: function(aCurrentFilterValues) {
-			return this.aKeys.filter(function(el, i) {
-				if (aCurrentFilterValues[i] !== "") {
-					return el;
-				}
-			});
-		},
+
 		getFormattedSummaryText: function(aFilterCriterias) {
 			if (aFilterCriterias.length > 0) {
 				return "Filtered By (" + aFilterCriterias.length + "): " + aFilterCriterias.join(", ");
@@ -297,11 +331,6 @@ sap.ui.define([
 		},
 		getPageTitle: function() {
 			return this.getPage().getTitle();
-		},
-		getSnappedLabel: function() {
-			return new Label({
-				text: "{/Filter/text}"
-			});
 		},
 		
 		onAfterRendering: function () {
@@ -330,15 +359,15 @@ sap.ui.define([
 				map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
 					
 					if(allLayers.includes(layer)) {
-						// Only show a messagebox when a marker has been clicked on, timestamp is a unique property given by the marker layers
+						// Only show a messagebox when a marker has been clicked on, info is a unique property given by the marker layers
 						if (feature.get('info'))
 						{
 							// Transform coördinates to a longitude & latitude array
 							var lonlat = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
 							
-							// Show the converted longitude and latitude as well as the timestamp
+							// Show the converted longitude and latitude as well as the info
 							that.getView().byId('txtLocationInfo').setText(ol.coordinate.toStringHDMS([lonlat[0], lonlat[1]]));
-							that.getView().byId('txtLocationTimestamp').setText("Timestamp: " + feature.get('info'));
+							that.getView().byId('txtAssetInfo').setText("Physical ID: " + feature.get('info'));
 						}
 					}
 				});
@@ -446,9 +475,9 @@ sap.ui.define([
 			aInfo = [];
 			counter = 0;
 			
-			// Reset the info about coordination & timestamp
+			// Reset the info about coordination & info
 			that.getView().byId('txtLocationInfo').setText("");
-			that.getView().byId('txtLocationTimestamp').setText("");
+			that.getView().byId('txtAssetInfo').setText("");
 			
 			// Reset the target of the map
 			// This has to be done every time we call this view as for some reason the map reference seems to disappear after routing multiple other views

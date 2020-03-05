@@ -72,7 +72,7 @@
 					justifyContent="Center"
 					alignItems="Center"
 					alignContent="Center">
-					<Text id="txtLocationTimestamp" class="textBold sapUiTinyMargin" />
+					<Text id="txtAssetInfo" class="textBold sapUiTinyMargin" />
 				</HBox>
 			</VBox>
 		</f:content>
