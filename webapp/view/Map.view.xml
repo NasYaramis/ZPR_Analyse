@@ -14,7 +14,7 @@
 		<f:header>
 			<f:DynamicPageHeader pinnable="false">
 				<f:content>
-					<fb:FilterBar id="filterbar" reset="onReset" search="onSearch" useToolbar="false" showGoOnFB="false" filterContainerWidth="15rem">
+					<fb:FilterBar id="filterbar" useToolbar="false" showClearOnFB="true" clear="resetEverything" showGoOnFB="false" filterContainerWidth="15rem">
 						<fb:filterItems>
 							<fb:FilterItem name="A" label="{i18n>lblBatch}">
 								<fb:control>
@@ -56,6 +56,9 @@
 							</fb:FilterItem>
 						</fb:filterItems>
 					</fb:FilterBar>
+					<HBox alignItems="Start" justifyContent="End">					
+						<!--<Button type="Reject" text="Reset filters" press="resetEverything" />-->
+					</HBox>
 				</f:content>
 			</f:DynamicPageHeader>
 		</f:header>

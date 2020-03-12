@@ -28,8 +28,6 @@ sap.ui.define([
 	var marker = new ol.Feature();
 	var clusters = new ol.layer.Vector();
 
-
-
 	return Controller.extend("zpr.analyse.ZPR-Analyse.controller.Map", {
 		Header: new Header(this),
 
@@ -122,10 +120,8 @@ sap.ui.define([
 		},
 
 		filterMap: function(aCurrentFilterValues) {
-			//reset all layers and texts
-			map.removeLayer(groupTotalJourneyLayers);
-			map.removeLayer(groupTotalJourneyLines);
-			this.resetEverything();
+
+			//this.resetEverything();
 
 			//If type filter is applied following code will filter data
 			if(aCurrentFilterValues[1] !== "TYPE0"){
@@ -150,7 +146,7 @@ sap.ui.define([
 				}
 			}
 			
-			//If begin date filter is applied following code will filter data
+			//Following filter sets an interval between two dates which shows the assets, which changed location between interval.
 			if(aCurrentFilterValues[4] !== "" && aCurrentFilterValues[5] !== ""){
 				for(var a in assets){
 					for (var b in assets[a].assetJourneys){
@@ -163,7 +159,9 @@ sap.ui.define([
 						}
 					}
 				}
-			}else { return ; }
+			}else if(aCurrentFilterValues[4] !== "" || aCurrentFilterValues[5] !== ""){
+				return ; 
+			}
 			
 			// //If end date filter is applied following code will filter data
 			// if(aCurrentFilterValues[5] !== ""  && aCurrentFilterValues[4] !== ""){
@@ -484,10 +482,20 @@ sap.ui.define([
 			aInfo = [];
 			counter = 0;
 			
-			// Reset the info about coordination & info
-			that.getView().byId('txtLocationInfo').setText("");
-			that.getView().byId('txtAssetInfo').setText("");
-			that.getView().byId('txtTimestamp').setText("");
+			//reset all layers and texts
+			map.removeLayer(groupTotalJourneyLayers);
+			map.removeLayer(groupTotalJourneyLines);
+			
+			// Reset all input and output
+			that.getView().byId("txtLocationInfo").setText("");
+			that.getView().byId("txtAssetInfo").setText("");
+			that.getView().byId("txtTimestamp").setText("");
+			that.getView().byId("slBatch").setSelectedKey("BATCH0");
+			that.getView().byId("slLocation").setSelectedKey("LOC0");
+			that.getView().byId("slColor").setSelectedKey("COLOR0");
+			that.getView().byId("slType").setSelectedKey("TYPE0");
+			that.getView().byId("dBeginDate").setValue("");
+			that.getView().byId("dEndDate").setValue("");
 			
 			// Reset the target of the map
 			// This has to be done every time we call this view as for some reason the map reference seems to disappear after routing multiple other views
