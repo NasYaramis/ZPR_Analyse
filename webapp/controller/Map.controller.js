@@ -151,34 +151,34 @@ sap.ui.define([
 			}
 			
 			//If begin date filter is applied following code will filter data
-			if(aCurrentFilterValues[4] !== ""){
+			if(aCurrentFilterValues[4] !== "" && aCurrentFilterValues[5] !== ""){
 				for(var a in assets){
 					for (var b in assets[a].assetJourneys){
 						for (var c in assets[a].assetJourneys[b].locations){
 							var timestamp = assets[a].assetJourneys[b].locations[c].timestamp;
-							if(timestamp.substring(0, timestamp.indexOf("T")) >= this.oDateBegin.getValue()){
+							if(timestamp.substring(0, timestamp.indexOf("T")) >= this.oDateBegin.getValue() && timestamp .substring(0, timestamp.indexOf("T")) <= this.oDateEnd.getValue()){
 								aInfo.push(assets[a].physicalId);
 								oLocations.push(assets[a].assetJourneys[b].locations[c]);
 							}
 						}
 					}
 				}
-			}
+			}else { return ; }
 			
-			//If end date filter is applied following code will filter data
-			if(aCurrentFilterValues[5] !== ""){
-				for(var d in assets){
-					for (var e in assets[d].assetJourneys){
-						for (var f in assets[d].assetJourneys[e].locations){
-							var timestamp2 = assets[d].assetJourneys[e].locations[f].timestamp;
-							if(timestamp2.substring(0, timestamp2.indexOf("T")) <= this.oDateEnd.getValue()){
-								aInfo.push(assets[d].physicalId);
-								oLocations.push(assets[d].assetJourneys[e].locations[f]);
-							}
-						}
-					}
-				}
-			}
+			// //If end date filter is applied following code will filter data
+			// if(aCurrentFilterValues[5] !== ""  && aCurrentFilterValues[4] !== ""){
+			// 	for(var d in assets){
+			// 		for (var e in assets[d].assetJourneys){
+			// 			for (var f in assets[d].assetJourneys[e].locations){
+			// 				var timestamp2 = assets[d].assetJourneys[e].locations[f].timestamp;
+			// 				if(timestamp2.substring(0, timestamp2.indexOf("T")) <= this.oDateEnd.getValue() && timestamp2.substring(0, timestamp2.indexOf("T")) >= this.oDateBegin.getValue()){
+			// 					aInfo.push(assets[d].physicalId);
+			// 					oLocations.push(assets[d].assetJourneys[e].locations[f]);
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// }
 			this.createLastLocations();
 			this.showTotalJourney();
 		},
@@ -357,7 +357,7 @@ sap.ui.define([
 					//overlays: [overlay],  // OVERLAY
 					view: new ol.View({
 						center: ol.proj.fromLonLat([4.357582, 51.198185]),
-						zoom: 12
+						zoom: 10
 					})
 				});
 			}
