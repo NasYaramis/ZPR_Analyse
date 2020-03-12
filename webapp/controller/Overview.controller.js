@@ -43,13 +43,13 @@ sap.ui.define([
 						}else dummy.push(assets[x]);
 					}
 					
-					for (var x in assets) {
+					for (var y in assets) {
 						// Split time and date from lastLocationTime
-						timestamp = assets[x].lastLocationTime.split(" ");
+						timestamp = assets[y].lastLocationTime.split(" ");
 						aDate = timestamp[0].substring(0, timestamp[0].length).split("-");
 						aTime = timestamp[1].substring(0, timestamp[1].length - 1).split(":");
 						
-						assets[x].time = (aTime[0] + ":" + aTime[1] + " " + aDate[2] + "/" + aDate[1] + "/" + aDate[2]);
+						assets[y].time = (aTime[0] + ":" + aTime[1] + " " + aDate[2] + "/" + aDate[1] + "/" + aDate[2]);
 					}
 					
 					// Set origin assets

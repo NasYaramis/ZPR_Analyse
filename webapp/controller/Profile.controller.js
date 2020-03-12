@@ -20,20 +20,21 @@ sap.ui.define([
 			
 		},
 		initialize:function(){
+			var that = this;
 			// if (oAuthStorage.get("oAuthToken")==null){
 			// 	this.LogOut();
 			// }
 			// else
 			// {
-				if(oAuthStorage.get("AuthenticatedAccessToken")==null)
+				if(oAuthStorage.get("AuthenticatedAccessToken")===null)
 				{
-					this.LogOut();
+					that.LogOut();
 				}
 				else
 				{
 					var AccessTokenUsername=oAuthStorage.get("AuthenticatedAccessToken");
 					var localUserVariable;
-					var that = this;
+
 					
 					var data = $.ajax({
 					url: "https://zpr-auth.auth.eu-west-1.amazoncognito.com/oauth2/userInfo",
@@ -52,14 +53,14 @@ sap.ui.define([
 				oAuthStorage.put("AuthenticatedUser",localUserVariable);
 				}
 				// Get the values of the textfields where the user its data is in
-				var username  = this.getView().byId("userName"); 
-				var role  = this.getView().byId("userRole"); 
-				var permissionExport  = this.getView().byId("userExport"); 
+				var username  = that.getView().byId("userName"); 
+				var role  = that.getView().byId("userRole"); 
+				var permissionExport  = that.getView().byId("userExport"); 
 				
 				// Check if the user is authenticated, if he is show his data that got stored.
 				// If the user isn't authenticated, redirect him to the login page
-				if (oAuthStorage.get("oAuthToken")==null){
-					this.logOut();
+				if (oAuthStorage.get("oAuthToken")===null){
+					that.logOut();
 				}
 				else
 				{
@@ -87,7 +88,7 @@ sap.ui.define([
 			oAuthStorage.put("AuthenticatedAccessToken",null); 
 			oAuthStorage.put("AuthenticationLogOut","Yes");
 		
-			var urlToRedirectTo="https://zpranalyse-a44552055.dispatcher.hana.ondemand.com/index.html"
+			var urlToRedirectTo="https://zpranalyse-a44552055.dispatcher.hana.ondemand.com/index.html";
 			window.location=urlToRedirectTo; 
 		}
 	});

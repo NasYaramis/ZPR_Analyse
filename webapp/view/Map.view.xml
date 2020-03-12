@@ -46,12 +46,12 @@
 							</fb:FilterItem>
 							<fb:FilterItem name="E" label="{i18n>lblBeginDate}">
 								<fb:control>
-									<DatePicker change="onSelectChange"></DatePicker>
+									<DatePicker id="dBeginDate" change="onSelectChange" valueFormat="yyyy-MM-dd"></DatePicker>
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="F" label="{i18n>lblEndDate}">
 								<fb:control>
-									<DatePicker change="onSelectChange"></DatePicker>
+									<DatePicker id="dEndDate" change="onSelectChange" valueFormat="yyyy-MM-dd"></DatePicker>
 								</fb:control>
 							</fb:FilterItem>
 						</fb:filterItems>
@@ -73,6 +73,7 @@
 					alignItems="Center"
 					alignContent="Center">
 					<Text id="txtAssetInfo" class="textBold sapUiTinyMargin" />
+					<Text id="txtTimestamp" class="textBold sapUiTinyMargin" />
 				</HBox>
 			</VBox>
 		</f:content>

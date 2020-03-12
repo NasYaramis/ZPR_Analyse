@@ -64,7 +64,7 @@ sap.ui.define([
 					
 					// Filter assets based on the assetStatus 'Active'
 					var aActiveSensors = assets.filter(function (asset) {
-						return asset.assetStatus === "ACTIVE"
+						return asset.assetStatus === "ACTIVE";
 					});
 					
 					// Create JSON model and set data of the active sensors
@@ -84,7 +84,7 @@ sap.ui.define([
 					
 					// Filter assets based on the assetStatus 'Retired'
 					var aRetiredSensors = assets.filter(function (asset) {
-						return asset.assetStatus === "RETIRED"
+						return asset.assetStatus === "RETIRED";
 					});
 					
 					// Create JSON model and set data of the active sensors
@@ -104,7 +104,7 @@ sap.ui.define([
 					
 					// Get sticky values from table and add InfoToolbar as an extra variable
 					var aStickyActive = that.getView().byId("sensorTableActive").getSticky();
-					if(!aStickyActive.find(element => element === "InfoToolbar")) {
+					if(!aStickyActive.find(element >= element === "InfoToolbar")) {
 						aStickyActive.push("InfoToolbar");
 					}
 					
@@ -113,7 +113,7 @@ sap.ui.define([
 					
 					// Get sticky values from table and add InfoToolbar as an extra variable
 					var aStickyRetired = that.getView().byId("sensorTableRetired").getSticky();
-					if(!aStickyRetired.find(element => element === "InfoToolbar")) {
+					if(!aStickyRetired.find(element >= element === "InfoToolbar")) {
 						aStickyRetired.push("InfoToolbar");
 					}
 					
@@ -122,9 +122,9 @@ sap.ui.define([
 				},
 				error: function(errorstatus,statusText)  {
 						// If the user is unauthorized we redirect him back to the login page
-					if(errorstatus.status==401)
+					if(errorstatus.status===401)
 					{
-						var urlToRedirectTo="https://zprsapresearcher-s0020962283trial.dispatcher.hanatrial.ondemand.com/index.html"
+						var urlToRedirectTo="https://zprsapresearcher-s0020962283trial.dispatcher.hanatrial.ondemand.com/index.html";
 						window.location=urlToRedirectTo; 
 					}
 					else

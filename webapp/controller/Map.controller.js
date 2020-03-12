@@ -8,27 +8,26 @@ sap.ui.define([
 ], function(Controller, JSONModel, Label, Filter, Header) {
 	"use strict";
 	
-	var assets;
-	// Define map and location we'll use later on
+	// Define arrays which hold data and map
+	var aInfo = [];
+	var assets = [];
 	var oLocations, map;
 	var aLocations = [];
-	var aInfo = [];
 
 	// Define all the layers for both total journey and last location
 	var groupTotalJourneyLayers, groupTotalJourneyLines, groupClusterLayers;
 	
 	// Define the variables we need to keep track of all the sources
-	var sourceTotalLocations = [];
-	var sourceTotalLines;
 	var counter = 0;
+	var sourceTotalLocations = [];
 	
-	var clusters = new ol.layer.Vector();
-	var allClusters = [];
-	var allLayers = [];
-	var marker = new ol.Feature();
 	var aLayers = [];
 	var features = [];
-	var markers = [];
+	var allLayers = [];
+	var allClusters = [];
+	var marker = new ol.Feature();
+	var clusters = new ol.layer.Vector();
+
 
 
 	return Controller.extend("zpr.analyse.ZPR-Analyse.controller.Map", {
@@ -57,20 +56,34 @@ sap.ui.define([
 				//	Authorization:"Bearer "+authenticationToken	
 				//	},
 				success: function (dataj) {
-					assets = dataj;
+					//assets = dataj;
+					
+					//Here we remove all duplicated keys in the assets/export api using JQuery
+					$.each(dataj, function(key, value) {
+					var exists = false;
+					$.each(assets, function(k, val2) {
+					  if(value.id === val2.id) {exists = true;}
+					});
+					if(exists === false && value.id !== "") { assets.push(value); }
+					});
+						
+					//Selects are filled with data		
 					that.feedData();
 					
 					var oModel = new sap.ui.model.json.JSONModel();
 					oModel.setData(assets);
 					that.getView().setModel(oModel);
 					
+					//Keys are assigned to selects
 					that.aKeys = [
 						"Batch", "Type", "Color", "Location"
 					];
 					that.oSelectName = that.getSelect("slBatch");
-					that.oSelectCategory = that.getSelect("slType");
-					that.oSelectSupplierName = that.getSelect("slColor");
+					that.oSelectType = that.getSelect("slType");
+					that.oSelectColor = that.getSelect("slColor");
 					that.oSelectLocation = that.getSelect("slLocation");
+					that.oDateBegin = that.getSelect("dBeginDate");
+					that.oDateEnd = that.getSelect("dEndDate");
 
 					var oFB = that.getView().byId("filterbar");
 					if (oFB) {
@@ -94,46 +107,77 @@ sap.ui.define([
 		onToggleHeader: function() {
 			this.getPage().setHeaderExpanded(!this.getPage().getHeaderExpanded());
 		},
-		onToggleFooter: function() {
-			this.getPage().setShowFooter(!this.getPage().getShowFooter());
-		},
+
 		onSelectChange: function() {
 			var aCurrentFilterValues = [];
 			
 			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectName));
-			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectCategory));
-			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectSupplierName));
+			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectType));
+			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectColor));
 			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectLocation));
+			aCurrentFilterValues.push((this.oDateBegin).getValue());
+			aCurrentFilterValues.push((this.oDateEnd).getValue());
 
 			this.filterMap(aCurrentFilterValues);
 		},
 
 		filterMap: function(aCurrentFilterValues) {
+			//reset all layers and texts
 			map.removeLayer(groupTotalJourneyLayers);
 			map.removeLayer(groupTotalJourneyLines);
 			this.resetEverything();
 
-
+			//If type filter is applied following code will filter data
 			if(aCurrentFilterValues[1] !== "TYPE0"){
-					var assetJourneysLength;
-					
-					if(aCurrentFilterValues[1] === "TYPE1"){
-						for(var x in assets){
-							if(assets[x].type === "CONNECTED"){
-								assetJourneysLength = assets[x].assetJourneys.length;
-								aInfo.push(assets[x].physicalId);
-								oLocations.push(assets[x].assetJourneys[assetJourneysLength - 1].lastLocationData);
-							}
+				var assetJourneysLength;
+				
+				if(aCurrentFilterValues[1] === "TYPE1"){
+					for(var x in assets){
+						if(assets[x].type === "CONNECTED"){
+							assetJourneysLength = assets[x].assetJourneys.length;
+							aInfo.push(assets[x].physicalId);
+							oLocations.push(assets[x].assetJourneys[assetJourneysLength - 1].lastLocationData);
 						}
-					}else{
-						for(var y in assets){
-							if(assets[y].type === "UNCONNECTED"){
-								assetJourneysLength = assets[y].assetJourneys.length;
-								aInfo.push(assets[y].physicalId);
-								oLocations.push(assets[y].assetJourneys[assetJourneysLength - 1].lastLocationData);
+					}
+				}else{
+					for(var y in assets){
+						if(assets[y].type === "UNCONNECTED"){
+							assetJourneysLength = assets[y].assetJourneys.length;
+							aInfo.push(assets[y].physicalId);
+							oLocations.push(assets[y].assetJourneys[assetJourneysLength - 1].lastLocationData);
+						}
+					}
+				}
+			}
+			
+			//If begin date filter is applied following code will filter data
+			if(aCurrentFilterValues[4] !== ""){
+				for(var a in assets){
+					for (var b in assets[a].assetJourneys){
+						for (var c in assets[a].assetJourneys[b].locations){
+							var timestamp = assets[a].assetJourneys[b].locations[c].timestamp;
+							if(timestamp.substring(0, timestamp.indexOf("T")) >= this.oDateBegin.getValue()){
+								aInfo.push(assets[a].physicalId);
+								oLocations.push(assets[a].assetJourneys[b].locations[c]);
 							}
 						}
 					}
+				}
+			}
+			
+			//If end date filter is applied following code will filter data
+			if(aCurrentFilterValues[5] !== ""){
+				for(var d in assets){
+					for (var e in assets[d].assetJourneys){
+						for (var f in assets[d].assetJourneys[e].locations){
+							var timestamp2 = assets[d].assetJourneys[e].locations[f].timestamp;
+							if(timestamp2.substring(0, timestamp2.indexOf("T")) <= this.oDateEnd.getValue()){
+								aInfo.push(assets[d].physicalId);
+								oLocations.push(assets[d].assetJourneys[e].locations[f]);
+							}
+						}
+					}
+				}
 			}
 			this.createLastLocations();
 			this.showTotalJourney();
@@ -144,6 +188,7 @@ sap.ui.define([
 			aLocations.length = 0;
 			
 			features = oLocations.map(function(location){
+				
 				marker = new ol.Feature({
 					geometry: new ol.geom.Point(
 						ol.proj.fromLonLat([location.longitude, location.latitude])
@@ -152,14 +197,10 @@ sap.ui.define([
 				
 				marker.set('info', aInfo[counter]);
 				counter++;
+				marker.set('timestamp', location.timestamp);
 				
 				return marker;
 			});
-			
-			// for(var x in features){
-			// 	x.set('info', aInfo[counter]);
-			// 	counter++;
-			// }
 			
 			oLocations.forEach(function(location) {
 				// Fill an array with solely the converted longitude and latitude
@@ -174,16 +215,10 @@ sap.ui.define([
 					)
 				});
 				
-				// Set an extra property named info so we can show the time later on when a users clicks on a marker
-				//marker.set('info', aInfo[counter]);
-				//counter++;
-
-				
-
 				// Change the style of the marker and use a custom icon
 				marker.setStyle( new ol.style.Style({
 					image: new ol.style.Circle({
-						radius: 10,
+						radius: 15,
 						fill: new ol.style.Fill({color: '#E6600D'}),
 						stroke: new ol.style.Stroke({
 							color: [255,0,0], width: 2
@@ -197,7 +232,7 @@ sap.ui.define([
 				});
 				
 				var clusterSource = new ol.source.Cluster({
-					distance: 20,
+					distance: 30,
 					source: vectorSource
 				});
 
@@ -210,7 +245,7 @@ sap.ui.define([
 				    if (!style) {
 				      style = new ol.style.Style({
 				        image: new ol.style.Circle({
-				          radius: 10,
+				          radius: 15,
 				          stroke: new ol.style.Stroke({
 				            color: "#fff"
 				          }),
@@ -255,33 +290,6 @@ sap.ui.define([
 					name: 'totalClusters'
 					
 				});
-				
-				// Create style for a new layer (will be a line between markers)
-				var styleLine = [
-					new ol.style.Style({
-							stroke: new ol.style.Stroke({
-							color: '#E09D00',
-							width: 3
-						})
-					})
-				];
-				
-				sourceTotalLines = new ol.source.Vector({
-					features: [new ol.Feature({
-						geometry: new ol.geom.LineString(aLocations),
-						name: 'Line'
-					})]
-				})
-				
-				// Create the layer (line between markers on the map)
-				groupTotalJourneyLines = new ol.layer.Vector({
-					source: sourceTotalLines
-				});
-				
-				// Set the style of the freshly created layer
-				groupTotalJourneyLines.setStyle(styleLine);
-				
-				allLayers.push(groupTotalJourneyLines);
 			}
 		},
 		
@@ -343,7 +351,7 @@ sap.ui.define([
 					target: that.getView().byId("map_canvas").getDomRef(),
 					layers: [
 						new ol.layer.Tile({
-							source: new ol.source.OSM(),
+							source: new ol.source.OSM()
 						})
 					],
 					//overlays: [overlay],  // OVERLAY
@@ -368,6 +376,7 @@ sap.ui.define([
 							// Show the converted longitude and latitude as well as the info
 							that.getView().byId('txtLocationInfo').setText(ol.coordinate.toStringHDMS([lonlat[0], lonlat[1]]));
 							that.getView().byId('txtAssetInfo').setText("Physical ID: " + feature.get('info'));
+							that.getView().byId('txtTimestamp').setText("Timestamp: " + feature.get('timestamp'));
 						}
 					}
 				});
@@ -403,7 +412,7 @@ sap.ui.define([
 		                name : "BATCH 5",
 		                key  : "BATCH5"
 		            },{
-		                name : "BATCH6",
+		                name : "BATCH 6",
 		                key  : "BATCH6"
 		            }]
 		    };
@@ -478,6 +487,7 @@ sap.ui.define([
 			// Reset the info about coordination & info
 			that.getView().byId('txtLocationInfo').setText("");
 			that.getView().byId('txtAssetInfo').setText("");
+			that.getView().byId('txtTimestamp').setText("");
 			
 			// Reset the target of the map
 			// This has to be done every time we call this view as for some reason the map reference seems to disappear after routing multiple other views

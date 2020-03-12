@@ -8,8 +8,8 @@ sap.ui.define([
 ], function (Controller, UIComponent, History, MessageBox, Header, Storage) {
 	"use strict";
 
-	var activeJourney, dataPicture, physicalId, correlationAssetId;
-	var oLocations, map, physicalId, oLastLocation;
+	var dataPicture, physicalId, correlationAssetId;
+	var map, activeJourney, oLastLocation;
 	var lastLocationLayer;
 	var sourceLastLocation;
 	var allLayers = [];
