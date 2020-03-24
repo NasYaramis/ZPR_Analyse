@@ -108,6 +108,7 @@ sap.ui.define([
 
 		onSelectChange: function() {
 			var aCurrentFilterValues = [];
+    		var busyDialog = this.getView().byId("BusyDialog");
 			
 			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectName));
 			aCurrentFilterValues.push(this.getSelectedItemText(this.oSelectType));
@@ -116,7 +117,12 @@ sap.ui.define([
 			aCurrentFilterValues.push((this.oDateBegin).getValue());
 			aCurrentFilterValues.push((this.oDateEnd).getValue());
 
+
+			busyDialog.setVisible(true);
+			busyDialog.open();
 			this.filterMap(aCurrentFilterValues);
+		    busyDialog.close();
+		    busyDialog.setVisible(false);    
 		},
 
 		filterMap: function(aCurrentFilterValues) {
