@@ -190,8 +190,18 @@ sap.ui.define([
 		},
 		
 		createLastLocations: function() {
-			// Reset locations array array
+			// Reset locations array
 			aLocations.length = 0;
+			
+			var style = new ol.style.Style({
+					image: new ol.style.Circle({
+						radius: 15,
+						fill: new ol.style.Fill({color: "#E6600D"}),
+						stroke: new ol.style.Stroke({
+							color: [255,0,0], width: 2
+						})
+					})
+				});
 			
 			features = oLocations.map(function(location){
 				
@@ -201,9 +211,11 @@ sap.ui.define([
 					)
 				});
 				
-				marker.set('info', aInfo[counter]);
+				marker.set("info", aInfo[counter]);
 				counter++;
-				marker.set('timestamp', location.timestamp);
+				marker.set("timestamp", location.timestamp);
+				
+				marker.setStyle(style);
 				
 				return marker;
 			});
