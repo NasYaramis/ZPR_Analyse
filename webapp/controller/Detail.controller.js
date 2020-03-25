@@ -1,11 +1,13 @@
+/* global ol:true */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/UIComponent",
 	"sap/ui/core/routing/History",
 	"sap/m/MessageBox",
 	"zpr/analyse/ZPR-Analyse/controller/fragments/Header.controller",
-	"sap/ui/util/Storage"
-], function (Controller, UIComponent, History, MessageBox, Header, Storage) {
+	"sap/ui/util/Storage",
+	"zpr/analyse/ZPR-Analyse/libs/ol"
+], function (Controller, UIComponent, History, MessageBox, Header, Storage, oljs) {
 	"use strict";
 
 	var dataPicture, physicalId, correlationAssetId;
