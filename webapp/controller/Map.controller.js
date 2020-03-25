@@ -202,6 +202,33 @@ sap.ui.define([
 						})
 					})
 				});
+				
+			var styleCache = {};
+			var clusterStyle = function(feature) {
+				    var size = feature.get("features").length;
+				    var style2 = styleCache[size];
+				    if (!style2) {
+				      style2 = new ol.style.Style({
+				        image: new ol.style.Circle({
+				          radius: 15,
+				          stroke: new ol.style.Stroke({
+				            color: "#fff"
+				          }),
+				          fill: new ol.style.Fill({
+				            color: "#E6600D"
+				          })
+				        }),
+				        text: new ol.style.Text({
+				          text: size.toString(),
+				          fill: new ol.style.Fill({
+				            color: "#fff"
+				          })
+				        })
+				      });
+				      styleCache[size] = style2;
+				    }
+				    return style2;
+				  };
 			
 			features = oLocations.map(function(location){
 				
@@ -253,35 +280,10 @@ sap.ui.define([
 					distance: 30,
 					source: vectorSource
 				});
-
-				var styleCache = {};
+				
 				clusters = new ol.layer.Vector({
 				  source: clusterSource,
-				  style: function(feature) {
-				    var size = feature.get("features").length;
-				    var style = styleCache[size];
-				    if (!style) {
-				      style = new ol.style.Style({
-				        image: new ol.style.Circle({
-				          radius: 15,
-				          stroke: new ol.style.Stroke({
-				            color: "#fff"
-				          }),
-				          fill: new ol.style.Fill({
-				            color: "#E6600D"
-				          })
-				        }),
-				        text: new ol.style.Text({
-				          text: size.toString(),
-				          fill: new ol.style.Fill({
-				            color: "#fff"
-				          })
-				        })
-				      });
-				      styleCache[size] = style;
-				    }
-				    return style;
-				  }
+				  style: clusterStyle
 				});
 				
 				// Create layer based on a vector		
