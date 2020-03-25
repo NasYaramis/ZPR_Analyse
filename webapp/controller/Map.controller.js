@@ -202,33 +202,6 @@ sap.ui.define([
 						})
 					})
 				});
-				
-			var styleCache = {};
-			var clusterStyle = function(feature) {
-				    var size = feature.get("features").length;
-				    var style2 = styleCache[size];
-				    if (!style2) {
-				      style2 = new ol.style.Style({
-				        image: new ol.style.Circle({
-				          radius: 15,
-				          stroke: new ol.style.Stroke({
-				            color: "#fff"
-				          }),
-				          fill: new ol.style.Fill({
-				            color: "#E6600D"
-				          })
-				        }),
-				        text: new ol.style.Text({
-				          text: size.toString(),
-				          fill: new ol.style.Fill({
-				            color: "#fff"
-				          })
-				        })
-				      });
-				      styleCache[size] = style2;
-				    }
-				    return style2;
-				  };
 			
 			features = oLocations.map(function(location){
 				
@@ -247,29 +220,39 @@ sap.ui.define([
 				return marker;
 			});
 			
+			var styleCache = {};
+			var clusterStyle = function(feature) {
+			    var size = feature.get("features").length;
+			    var style2 = styleCache[size];
+			    if (!style2) {
+			      style = new ol.style.Style({
+			        image: new ol.style.Circle({
+			          radius: 15,
+			          stroke: new ol.style.Stroke({
+			            color: "#fff"
+			          }),
+			          fill: new ol.style.Fill({
+			            color: "#E6600D"
+			          })
+			        }),
+			        text: new ol.style.Text({
+			          text: size.toString(),
+			          fill: new ol.style.Fill({
+			            color: "#fff"
+			          })
+			        })
+			      });
+			      styleCache[size] = style;
+			    }
+			    return style2;
+			  };
+			
 			oLocations.forEach(function(location) {
 				// Fill an array with solely the converted longitude and latitude
 				aLocations.push(
 					ol.proj.fromLonLat([location.longitude, location.latitude])
 				);
 				
-				// // Create a marker (= feature) which references to the location of the asset
-				//  marker = new ol.Feature({
-				// 	geometry: new ol.geom.Point(
-				// 		ol.proj.fromLonLat([location.longitude, location.latitude])
-				// 	)
-				// });
-				
-				// // Change the style of the marker and use a custom icon
-				// marker.setStyle( new ol.style.Style({
-				// 	image: new ol.style.Circle({
-				// 		radius: 15,
-				// 		fill: new ol.style.Fill({color: '#E6600D'}),
-				// 		stroke: new ol.style.Stroke({
-				// 			color: [255,0,0], width: 2
-				// 		})
-				// 	})
-				// }));
 				
 				// Create a vector based on the features
 				var vectorSource = new ol.source.Vector({
@@ -280,7 +263,7 @@ sap.ui.define([
 					distance: 30,
 					source: vectorSource
 				});
-				
+
 				clusters = new ol.layer.Vector({
 				  source: clusterSource,
 				  style: clusterStyle
@@ -292,23 +275,14 @@ sap.ui.define([
 				});
 				
 				allClusters.push(clusters);
-				allLayers.push(markerVectorLayer);
-				allLayers.push(clusters);
 				aLayers.push(markerVectorLayer);
 				sourceTotalLocations.push(vectorSource);
 			});
 			
 			if(aLocations.length > 0) {
-				groupTotalJourneyLayers = new ol.layer.Group({
-					layers: aLayers,
-					name: 'totalJourneysGroup'
-					
-				});
-				
 				groupClusterLayers = new ol.layer.Group({
 					layers: allClusters,
 					name: 'totalClusters'
-					
 				});
 			}
 		},
@@ -317,7 +291,6 @@ sap.ui.define([
 			var that = this;
 			
 			// Add both layers that belong to the total journey to the map
-			map.addLayer(groupTotalJourneyLayers);
 			map.addLayer(groupClusterLayers);
 
 			// Reset the center of the map
@@ -386,17 +359,20 @@ sap.ui.define([
 			map.on("singleclick", function(e) {
 				map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
 					
-					if(allLayers.includes(layer)) {
+					if(allClusters.includes(layer)) {
 						// Only show a messagebox when a marker has been clicked on, info is a unique property given by the marker layers
-						if (feature.get('info'))
+						if (feature.get('features'))
 						{
 							// Transform coördinates to a longitude & latitude array
 							var lonlat = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
 							
 							// Show the converted longitude and latitude as well as the info
 							that.getView().byId('txtLocationInfo').setText(ol.coordinate.toStringHDMS([lonlat[0], lonlat[1]]));
-							that.getView().byId('txtAssetInfo').setText("Physical ID: " + feature.get('info'));
-							that.getView().byId('txtTimestamp').setText("Timestamp: " + feature.get('timestamp'));
+							var featuresCycle = feature.get('features');
+    						for(var i = 0; i < featuresCycle.length; i++) {
+								that.getView().byId('txtAssetInfo').setText("Physical ID: " + featuresCycle[i].get('info'));
+								that.getView().byId('txtTimestamp').setText("Timestamp: " + featuresCycle[i].get('timestamp'));
+    						}
 						}
 					}
 				});
