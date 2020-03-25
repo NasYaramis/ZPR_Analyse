@@ -1,11 +1,13 @@
+/* global ol:true */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/Label",
 	"sap/ui/model/Filter",
 	"zpr/analyse/ZPR-Analyse/controller/fragments/Header.controller",
-	"sap/ui/util/Storage"
-], function(Controller, JSONModel, Label, Filter, Header) {
+	"sap/ui/util/Storage",
+	"zpr/analyse/ZPR-Analyse/libs/ol"
+], function(Controller, JSONModel, Label, Filter, Header, oljs) {
 	"use strict";
 	
 	// Define arrays which hold data and map
@@ -212,23 +214,23 @@ sap.ui.define([
 					ol.proj.fromLonLat([location.longitude, location.latitude])
 				);
 				
-				// Create a marker (= feature) which references to the location of the asset
-				 marker = new ol.Feature({
-					geometry: new ol.geom.Point(
-						ol.proj.fromLonLat([location.longitude, location.latitude])
-					)
-				});
+				// // Create a marker (= feature) which references to the location of the asset
+				//  marker = new ol.Feature({
+				// 	geometry: new ol.geom.Point(
+				// 		ol.proj.fromLonLat([location.longitude, location.latitude])
+				// 	)
+				// });
 				
-				// Change the style of the marker and use a custom icon
-				marker.setStyle( new ol.style.Style({
-					image: new ol.style.Circle({
-						radius: 15,
-						fill: new ol.style.Fill({color: '#E6600D'}),
-						stroke: new ol.style.Stroke({
-							color: [255,0,0], width: 2
-						})
-					})
-				}));
+				// // Change the style of the marker and use a custom icon
+				// marker.setStyle( new ol.style.Style({
+				// 	image: new ol.style.Circle({
+				// 		radius: 15,
+				// 		fill: new ol.style.Fill({color: '#E6600D'}),
+				// 		stroke: new ol.style.Stroke({
+				// 			color: [255,0,0], width: 2
+				// 		})
+				// 	})
+				// }));
 				
 				// Create a vector based on the features
 				var vectorSource = new ol.source.Vector({
